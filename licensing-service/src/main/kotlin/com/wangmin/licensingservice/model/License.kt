@@ -1,10 +1,16 @@
 package com.wangmin.licensingservice.model
 
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+
+@Entity
+@Table(name = "licenses")
 data class License(
-    val id: Int,
+    @Id
     val licenseId: String,
     val description: String,
-    val organizationId: String,
+    var organizationId: String,
     val productName: String,
     val licenseType: String,
 )

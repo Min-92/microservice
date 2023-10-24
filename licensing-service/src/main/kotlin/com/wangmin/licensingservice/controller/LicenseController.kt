@@ -28,7 +28,7 @@ class LicenseController(
     fun updateLicense(
         @RequestBody request: License,
         @PathVariable organizationId: String,
-    ): String {
+    ): License {
         return licenseService.updateLicense(request, organizationId)
     }
 
@@ -36,8 +36,8 @@ class LicenseController(
     fun createLicense(
         @RequestBody request: License,
         @PathVariable organizationId: String,
-    ): String {
-        return licenseService.createLicense(request, organizationId)
+    ): License {
+        return licenseService.createLicense(request.also { it.organizationId = organizationId })
     }
 
     @DeleteMapping("{licenseId}")
