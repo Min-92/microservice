@@ -1,6 +1,7 @@
 package com.wangmin.licensingservice.service
 
 import com.wangmin.licensingservice.client.OrganizationDiscoveryClient
+import com.wangmin.licensingservice.client.OrganizationRestTemplateClient
 import com.wangmin.licensingservice.model.License
 import com.wangmin.licensingservice.model.Organization
 import com.wangmin.licensingservice.repository.LicenseRepository
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service
 class LicenseService(
     private val licenseRepository: LicenseRepository,
     private val organizationDiscoveryClient: OrganizationDiscoveryClient,
+    private val organizationRestTemplateClient: OrganizationRestTemplateClient,
 ) {
     fun getLicense(licenseId: String, organizationId: String): License =
         licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId)
@@ -32,7 +34,11 @@ class LicenseService(
         organizationId: String,
         clientType: String,
     ): Organization? {
-        return organizationDiscoveryClient.getOrganization(organizationId)
+        when (clientType) {
+            "discovery" -> return organizationDiscoveryClient.getOrganization(organizationId)
+            "rest" -> return organizationRestTemplateClient.getOrganization(organizationId)
+        }
+        return null
     }
 
     fun createLicense(license: License): License {
