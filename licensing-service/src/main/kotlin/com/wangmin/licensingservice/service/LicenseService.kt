@@ -1,15 +1,39 @@
 package com.wangmin.licensingservice.service
 
+import com.wangmin.licensingservice.client.OrganizationDiscoveryClient
 import com.wangmin.licensingservice.model.License
+import com.wangmin.licensingservice.model.Organization
 import com.wangmin.licensingservice.repository.LicenseRepository
 import org.springframework.stereotype.Service
 
 @Service
 class LicenseService(
     private val licenseRepository: LicenseRepository,
+    private val organizationDiscoveryClient: OrganizationDiscoveryClient,
 ) {
     fun getLicense(licenseId: String, organizationId: String): License =
         licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId)
+
+    fun getLicense(licenseId: String, organizationId: String, clientType: String): License {
+        val license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId)
+        val organization = retrieveOrganizationInfo(organizationId, clientType)
+
+        if (organization != null) {
+            license.organizationName = organization.name
+            license.contactEmail = organization.contactEmail
+            license.contactName = organization.contactName
+            license.contactPhone = organization.contactPhone
+        }
+
+        return license
+    }
+
+    fun retrieveOrganizationInfo(
+        organizationId: String,
+        clientType: String,
+    ): Organization? {
+        return organizationDiscoveryClient.getOrganization(organizationId)
+    }
 
     fun createLicense(license: License): License {
         val saved = licenseRepository.save(license)

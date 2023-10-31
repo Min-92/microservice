@@ -47,4 +47,13 @@ class LicenseController(
     ): String {
         return licenseService.deleteLicense(licenseId, organizationId)
     }
+
+    @GetMapping("{licenseId}/{clientType}")
+    fun getLicenseWithClient(
+        @PathVariable licenseId: String,
+        @PathVariable organizationId: String,
+        @PathVariable clientType: String,
+    ): License {
+        return licenseService.getLicense(licenseId, organizationId, clientType)
+    }
 }

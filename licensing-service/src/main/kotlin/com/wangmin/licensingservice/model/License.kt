@@ -13,4 +13,16 @@ data class License(
     var organizationId: String,
     val productName: String,
     val licenseType: String,
+
+    @Transient
+    var organizationName: String,
+
+    @Transient
+    var contactName: String,
+
+    @Transient
+    var contactPhone: String,
+
+    @Transient
+    var contactEmail: String,
 )
