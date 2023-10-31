@@ -1,6 +1,7 @@
 package com.wangmin.licensingservice.service
 
 import com.wangmin.licensingservice.client.OrganizationDiscoveryClient
+import com.wangmin.licensingservice.client.OrganizationFeignClient
 import com.wangmin.licensingservice.client.OrganizationRestTemplateClient
 import com.wangmin.licensingservice.model.License
 import com.wangmin.licensingservice.model.Organization
@@ -12,6 +13,7 @@ class LicenseService(
     private val licenseRepository: LicenseRepository,
     private val organizationDiscoveryClient: OrganizationDiscoveryClient,
     private val organizationRestTemplateClient: OrganizationRestTemplateClient,
+    private val organizationFeignClient: OrganizationFeignClient,
 ) {
     fun getLicense(licenseId: String, organizationId: String): License =
         licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId)
@@ -37,6 +39,7 @@ class LicenseService(
         when (clientType) {
             "discovery" -> return organizationDiscoveryClient.getOrganization(organizationId)
             "rest" -> return organizationRestTemplateClient.getOrganization(organizationId)
+            "feign" -> return organizationFeignClient.getOrganization(organizationId)
         }
         return null
     }

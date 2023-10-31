@@ -30,6 +30,7 @@ dependencies {
 
     implementation("org.springframework.cloud:spring-cloud-starter-config:4.0.4")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.3")
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
